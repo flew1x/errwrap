@@ -17,8 +17,8 @@ func SetDomain(domain string) {
 	})
 }
 
-// AppError is an error wrapper
-type AppError struct {
+// ErrorInfo is an error wrapper
+type ErrorInfo struct {
 	Op     string
 	Code   ErrorCode
 	Domain string
@@ -27,7 +27,7 @@ type AppError struct {
 }
 
 // Error returns error message
-func (e *AppError) Error() string {
+func (e *ErrorInfo) Error() string {
 	if e.Meta != nil {
 		return fmt.Sprintf("%s: [%s] %v | meta: %v", e.Op, e.Code, e.Err, e.Meta)
 	}
@@ -36,13 +36,13 @@ func (e *AppError) Error() string {
 }
 
 // Unwrap returns the wrapped error
-func (e *AppError) Unwrap() error {
+func (e *ErrorInfo) Unwrap() error {
 	return e.Err
 }
 
 // CodeOf returns error code
 func CodeOf(err error) ErrorCode {
-	var appErr *AppError
+	var appErr *ErrorInfo
 
 	if errors.As(err, &appErr) {
 		return appErr.Code
@@ -57,7 +57,7 @@ func Wrap(op string, code ErrorCode, err error, meta map[string]any) error {
 		return nil
 	}
 
-	return &AppError{
+	return &ErrorInfo{
 		Op:   op,
 		Code: code,
 		Err:  err,

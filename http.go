@@ -43,7 +43,7 @@ type ErrorResponse struct {
 
 // WriteHTTPError writes AppError to http.ResponseWriter
 func WriteHTTPError(w http.ResponseWriter, err error) {
-	var appErr *AppError
+	var appErr *ErrorInfo
 	if !errors.As(err, &appErr) {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 

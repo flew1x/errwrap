@@ -50,7 +50,7 @@ func GRPCCodeFromErrorCode(code ErrorCode) codes.Code {
 
 // ToGRPCStatus converts error to grpc status
 func ToGRPCStatus(err error) error {
-	var appErr *AppError
+	var appErr *ErrorInfo
 
 	if !errors.As(err, &appErr) {
 		return status.Errorf(codes.Unknown, "internal error: %v", err)
