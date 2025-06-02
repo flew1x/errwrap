@@ -7,7 +7,7 @@
 ## 🚀 Installation
 
 ```bash
-go get gitlab.com/your-org/go-apperr
+go get github.com/flew1x/errwrap
 ```
 
 ---
@@ -122,7 +122,7 @@ Includes coverage for:
 
 ```
 errwrap/
-├── err.go        // Core error type and wrapping
+├── errwrap.go        // Core error type and wrapping
 ├── http.go          // HTTP helpers
 ├── grpc.go          // gRPC integration
 ├── config.go        // Global configuration
