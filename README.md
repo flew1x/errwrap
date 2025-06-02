@@ -1,6 +1,6 @@
-# 📦 apperr — Structured Error Handling for Go
+# 📦 errwrap — Structured Error Handling for Go
 
-`apperr` is a lightweight, extensible library for structured error handling in Go microservices. It provides consistent formatting, metadata support, and easy integration with both gRPC and HTTP protocols.
+`errwrap` is a lightweight, extensible library for structured error handling in Go microservices. It provides consistent formatting, metadata support, and easy integration with both gRPC and HTTP protocols.
 
 ---
 
