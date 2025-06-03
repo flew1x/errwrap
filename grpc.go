@@ -48,6 +48,37 @@ func GRPCCodeFromErrorCode(code ErrorCode) codes.Code {
 	}
 }
 
+func GRPCCodeToErrorCode(code codes.Code) ErrorCode {
+	switch code {
+	case codes.InvalidArgument:
+		return CodeInvalidArgument
+	case codes.Unauthenticated:
+		return CodeUnauthenticated
+	case codes.PermissionDenied:
+		return CodePermissionDenied
+	case codes.NotFound:
+		return CodeNotFound
+	case codes.AlreadyExists:
+		return CodeAlreadyExists
+	case codes.Aborted:
+		return CodeConflict
+	case codes.FailedPrecondition:
+		return CodePreconditionFailed
+	case codes.ResourceExhausted:
+		return CodeRateLimited
+	case codes.Internal:
+		return CodeInternal
+	case codes.DeadlineExceeded:
+		return CodeTimeout
+	case codes.Unavailable:
+		return CodeServiceUnavailable
+	case codes.Canceled:
+		return CodeCanceled
+	default:
+		return CodeUnknown
+	}
+}
+
 // ToGRPCStatus converts error to grpc status
 func ToGRPCStatus(err error) error {
 	var appErr *ErrorInfo
@@ -59,11 +90,17 @@ func ToGRPCStatus(err error) error {
 	grpcCode := GRPCCodeFromErrorCode(appErr.Code)
 	st := status.New(grpcCode, fmt.Sprintf("%s: %v", appErr.Op, appErr.Err))
 
+	reason := "unspecified"
+	if r, ok := appErr.Meta[MetaReason]; ok {
+		reason = fmt.Sprintf("%v", r)
+	}
+
 	detail := &errdetails.ErrorInfo{
 		Reason: string(appErr.Code),
 		Domain: getDomain(),
 		Metadata: map[string]string{
-			"operataion": appErr.Op,
+			"operation": appErr.Op,
+			"reason":    reason,
 		},
 	}
 
