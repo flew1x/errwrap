@@ -1,6 +1,6 @@
-# 📦 apperr — Structured Error Handling for Go
+# 📦 errwrap — Structured Error Handling for Go
 
-`apperr` is a lightweight, extensible library for structured error handling in Go microservices. It provides consistent formatting, metadata support, and easy integration with both gRPC and HTTP protocols.
+`errwrap` is a lightweight, extensible library for structured error handling in Go microservices. It provides consistent formatting, metadata support, and easy integration with both gRPC and HTTP protocols.
 
 ---
 
@@ -28,7 +28,7 @@ go get github.com/flew1x/errwrap
 ### Create a new error
 
 ```go
-err := apperr.Wrap("CreateUser", apperr.CodeConflict, errors.New("user already exists"), map[string]any{
+err := errwrap.Wrap("CreateUser", errwrap.CodeConflict, errors.New("user already exists"), map[string]any{
   "email": "user@example.com",
 })
 ```
@@ -36,8 +36,8 @@ err := apperr.Wrap("CreateUser", apperr.CodeConflict, errors.New("user already e
 ### Access error code
 
 ```go
-code := apperr.CodeOf(err)
-if code == apperr.CodeConflict {
+code := errwrap.CodeOf(err)
+if code == errwrap.CodeConflict {
   // handle conflict case
 }
 ```
@@ -47,8 +47,8 @@ if code == apperr.CodeConflict {
 ## 📡 gRPC Integration
 
 ```go
-return nil, apperr.ToGRPCStatus(
-  apperr.Wrap("GetUser", apperr.CodeNotFound, errors.New("not found"), map[string]any{
+return nil, errwrap.ToGRPCStatus(
+  errwrap.Wrap("GetUser", errwrap.CodeNotFound, errors.New("not found"), map[string]any{
     "id": "123",
   }),
 )
@@ -61,7 +61,7 @@ This will attach `errdetails.ErrorInfo` to the status and preserve error metadat
 ## 🌐 HTTP Integration
 
 ```go
-apperr.WriteHTTPError(w, apperr.Wrap("Validate", apperr.CodeInvalidArgument, errors.New("missing field"), nil))
+errwrap.WriteHTTPError(w, errwrap.Wrap("Validate", errwrap.CodeInvalidArgument, errors.New("missing field"), nil))
 ```
 
 Responds with structured JSON and proper HTTP status:
@@ -81,8 +81,8 @@ Responds with structured JSON and proper HTTP status:
 Set domain (for tracing, metrics, etc):
 
 ```go
-apperr.Configure(
-  apperr.WithDomain("billing-service"),
+errwrap.Configure(
+  errwrap.WithDomain("billing-service"),
 )
 ```
 
